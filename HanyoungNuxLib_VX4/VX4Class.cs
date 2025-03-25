@@ -141,7 +141,31 @@ namespace HanyoungNuxLib_VX4
             }
             catch (FormatException)
             {
-                Global.EventLog("[ERROR] Invalid HEX format in response");
+                Global.EventLog("[ERROR] Invalid HEX format in PV response");
+                return double.NaN;
+            }
+        }
+
+        public double ReadSV(int addr)
+        {
+            string command = $"\x02{addr:D2}DRS,01,0103\x0D\x0A";
+            string response = _vx4class.SendCommand(command);
+
+            if (string.IsNullOrEmpty(response))
+                return double.NaN;
+            
+            string[] parts = response.Split(',');
+            if (parts.Length < 3)
+                return double.NaN;
+            
+            try
+            {
+                int svValue = Convert.ToInt32(parts[2], 16);
+                return svValue / 10.0;
+            }
+            catch (FormatException)
+            {
+                Global.EventLog("[ERROR] Invalid HEX format in SV response");
                 return double.NaN;
             }
         }
