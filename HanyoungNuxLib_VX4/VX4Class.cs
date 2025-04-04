@@ -63,8 +63,8 @@ namespace HanyoungNuxLib_VX4
                     _serialPort.ReadTimeout = 1000;
                     string response = _serialPort.ReadLine().Trim();
 
-                    Global.EventLog($"Sent: {command}");
-                    Global.EventLog($"Received: {response}\n");
+                    Global.EventLog($"[TX] {command}");
+                    Global.EventLog($"[RX] {response}\n");
 
                     return response;
                 }
